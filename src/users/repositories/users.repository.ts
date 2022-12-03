@@ -11,6 +11,9 @@ export class UsersRepository {
     async create(createUserDto: CreateUserDto): Promise<UserEntity> {
         return this.prisma.user.create({
             data: createUserDto,
+            include: {
+                posts: true,
+            },
         });
     }
 
@@ -27,6 +30,9 @@ export class UsersRepository {
             where: {
                 id: id,
             },
+            include: {
+                posts: true,
+            },
         });
     }
 
@@ -39,6 +45,9 @@ export class UsersRepository {
                 id: id,
             },
             data: updateUserDto,
+            include: {
+                posts: true,
+            },
         });
     }
 
@@ -46,6 +55,9 @@ export class UsersRepository {
         return this.prisma.user.delete({
             where: {
                 id: id,
+            },
+            include: {
+                posts: true,
             },
         });
     }

@@ -11,17 +11,37 @@ export class PostsRepository {
     async create(createPostDto: CreatePostDto): Promise<PostEntity> {
         return this.prisma.post.create({
             data: createPostDto,
+            include: {
+                author: true,
+            },
         });
     }
 
     async findAll(): Promise<PostEntity[]> {
-        return this.prisma.post.findMany();
+        return this.prisma.post.findMany({
+            include: {
+                author: {
+                    select: {
+                        name: true,
+                        email: true,
+                    },
+                },
+            },
+        });
     }
 
     async findOne(id: number): Promise<PostEntity> {
         return this.prisma.post.findUnique({
             where: {
                 id: id,
+            },
+            include: {
+                author: {
+                    select: {
+                        name: true,
+                        email: true,
+                    },
+                },
             },
         });
     }
@@ -35,6 +55,9 @@ export class PostsRepository {
                 id: id,
             },
             data: updatePostDto,
+            include: {
+                author: true,
+            },
         });
     }
 
@@ -42,6 +65,9 @@ export class PostsRepository {
         return this.prisma.post.delete({
             where: {
                 id: id,
+            },
+            include: {
+                author: true,
             },
         });
     }
